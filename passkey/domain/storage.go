@@ -6,4 +6,5 @@ type ISecretStore interface {
 	Exists(name string) (bool, error)
 	Get(name string) (Secret, error)
 	Delete(name string) error
+	DeleteAll() error
 }

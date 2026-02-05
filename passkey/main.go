@@ -29,7 +29,7 @@ func main() {
 		commands.Get(args)
 		return
 	case "delete":
-		commands.Delete(args[0])
+		commands.Delete(args)
 		return
 	default:
 		printHelp()

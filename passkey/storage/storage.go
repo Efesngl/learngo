@@ -104,3 +104,18 @@ func (s *JSONStorage) Delete(name string) error {
 	}
 	return s.SaveAll(filtered)
 }
+func (s *JSONStorage) DeleteAll() error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	return s.SaveAll([]domain.Secret{})
+}
+func (s *JSONStorage) First() (string, error) {
+	secrets, err := s.load()
+	if err != nil {
+		return "", err
+	}
+	if len(secrets) == 0 {
+		return "", nil
+	}
+	return secrets[0].Value, nil
+}

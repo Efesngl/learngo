@@ -14,15 +14,15 @@ func Get(args []string) {
 	MasterKeyService := crypt.NewMasterKeyService(saltStorage)
 
 	var password []byte
-	fmt.Print("Please enter master password: ")
+	fmt.Print("Please enter master key: ")
 	fmt.Scan(&password)
-	
+
 	masterKey, err := MasterKeyService.Derive(password)
 	if err != nil {
 		fmt.Println("Error: ", err)
 		return
 	}
-
+	
 	encrypter := crypt.NewAESEncrypter(masterKey)
 	secret := domain.NewGetSecret(store, encrypter)
 
