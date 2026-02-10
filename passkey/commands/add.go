@@ -2,42 +2,30 @@ package commands
 
 import (
 	"fmt"
+
 	"github.com/Efesngl/learngo/passkey/crypt"
 	"github.com/Efesngl/learngo/passkey/domain"
-	"github.com/Efesngl/learngo/passkey/storage"
 )
 
 func Add(args []string) {
 	if len(args) < 1 {
-		fmt.Println("Please enter secret name")
+		fmt.Println(domain.ErrEmptyName)
 		return
 	}
-	var secretValue string
-	if len(args) < 2 {
-		fmt.Print("Please enter secret value: ")
-		fmt.Scan(&secretValue)
-	} else {
-		secretValue = args[1]
-	}
-	// get secret store
-	store := storage.NewJSONStorage("secrets.json")
 
-	// get salt
-	saltStorage := storage.NewSaltStorage("salt.bin")
+	saltStorage, JsonStorage := initStorages("salt.bin", "secrets.json")
 
-	// get masterkey
-	var password []byte
-	fmt.Print("Please enter master key: ")
-	fmt.Scan(&password)
-	MasterKeyService := crypt.NewMasterKeyService(saltStorage)
-	masterKey, err := MasterKeyService.Derive(password)
+	masterKey, err := deriveMasterKey(saltStorage)
 	if err != nil {
 		fmt.Println("Error: ", err)
 		return
 	}
-
+	// then check the value
+	secretValue := getSecretValue(args)
+	
+	// then encrypt the value an add it to the storage
 	encrypter := crypt.NewAESEncrypter(masterKey)
-	secret := domain.NewAddSecret(store, encrypter)
+	secret := domain.NewAddSecret(JsonStorage, encrypter)
 
 	if err := secret.Execute(args[0], secretValue); err != nil {
 		fmt.Println("Error:", err)

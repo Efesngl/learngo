@@ -38,7 +38,8 @@ func (mks *MasterKeyService) Derive(password []byte) ([]byte, error) {
 	masterKey := pbkdf2.Key(password, salt, 4096, 32, sha256.New)
 	return masterKey, nil
 }
-func (mks *MasterKeyService) Verify(password []byte, store ISecretStore) error {
+
+func (mks *MasterKeyService) Verify(masterKey []byte, store ISecretStore) error {
 	secretValue, err := store.First()
 	if err != nil {
 		return err
@@ -48,11 +49,7 @@ func (mks *MasterKeyService) Verify(password []byte, store ISecretStore) error {
 	if err != nil {
 		return err
 	}
-	key, err := mks.Derive(password)
-	if err != nil {
-		return err
-	}
-	block, err := aes.NewCipher(key)
+	block, err := aes.NewCipher(masterKey)
 	if err != nil {
 		return err
 	}
