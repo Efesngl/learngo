@@ -33,7 +33,7 @@ func HandleDeleteAll(force bool) {
 	saltStorage, JsonStorage := initStorages("salt.bin", "secrets.json")
 	masterKeyService := crypt.NewMasterKeyService(saltStorage)
 
-	masterKey, err := deriveMasterKey(saltStorage)
+	masterKey, err := deriveMasterKey(saltStorage, "Please enter your master key")
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -62,7 +62,7 @@ func handleDeleteOne(name string, force bool) {
 	saltStorage, JsonStorage := initStorages("salt.bin", "secrets.json")
 	masterKeyService := crypt.NewMasterKeyService(saltStorage)
 
-	masterKey, err := deriveMasterKey(saltStorage)
+	masterKey, err := deriveMasterKey(saltStorage, "Please enter your master key")
 	if err != nil {
 		fmt.Println(err)
 		return

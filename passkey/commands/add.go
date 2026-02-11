@@ -14,15 +14,20 @@ func Add(args []string) {
 	}
 
 	saltStorage, JsonStorage := initStorages("salt.bin", "secrets.json")
-
-	masterKey, err := deriveMasterKey(saltStorage)
+	masterKeyService := crypt.NewMasterKeyService(saltStorage)
+	masterKey, err := deriveMasterKey(saltStorage,"Please enter your master key")
+	if err != nil {
+		fmt.Println("Error: ", err)
+		return
+	}
+	err = masterKeyService.Verify(masterKey, JsonStorage)
 	if err != nil {
 		fmt.Println("Error: ", err)
 		return
 	}
 	// then check the value
 	secretValue := getSecretValue(args)
-	
+
 	// then encrypt the value an add it to the storage
 	encrypter := crypt.NewAESEncrypter(masterKey)
 	secret := domain.NewAddSecret(JsonStorage, encrypter)

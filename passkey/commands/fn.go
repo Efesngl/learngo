@@ -14,8 +14,8 @@ func initStorages(slatStorage string, jsonStorage string) (*storage.SaltStorage,
 	return saltStorage, JsonStorage
 }
 
-func deriveMasterKey(SaltStore domain.ISaltStore) ([]byte, error) {
-	fmt.Print("Please enter master key: ")
+func deriveMasterKey(SaltStore domain.ISaltStore, message string) ([]byte, error) {
+	fmt.Print(message)
 	var password []byte
 	fmt.Scan(&password)
 	MasterKeyService := crypt.NewMasterKeyService(SaltStore)

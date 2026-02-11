@@ -4,10 +4,10 @@ import "encoding/base64"
 
 type AddSecret struct {
 	store     ISecretStore
-	encrypter IEncrypter
+	encrypter ICryptService
 }
 
-func NewAddSecret(store ISecretStore, encrypter IEncrypter) *AddSecret {
+func NewAddSecret(store ISecretStore, encrypter ICryptService) *AddSecret {
 	return &AddSecret{store: store, encrypter: encrypter}
 }
 

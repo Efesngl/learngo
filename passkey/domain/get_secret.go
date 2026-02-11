@@ -7,10 +7,10 @@ import (
 
 type GetSecret struct {
 	store     ISecretStore
-	encrypter IEncrypter
+	encrypter ICryptService
 }
 
-func NewGetSecret(store ISecretStore, encrypter IEncrypter) *GetSecret {
+func NewGetSecret(store ISecretStore, encrypter ICryptService) *GetSecret {
 	return &GetSecret{store: store, encrypter: encrypter}
 }
 

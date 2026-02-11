@@ -31,6 +31,9 @@ func main() {
 	case "delete":
 		commands.Delete(args)
 		return
+	case "cmk":
+		commands.ChangeMasterKey(args)
+		return
 	default:
 		printHelp()
 		return

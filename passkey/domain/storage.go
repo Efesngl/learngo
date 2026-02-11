@@ -7,4 +7,5 @@ type ISecretStore interface {
 	Get(name string) (Secret, error)
 	Delete(name string) error
 	DeleteAll() error
+	SaveAll(secrets []Secret) error
 }
